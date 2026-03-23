@@ -16,11 +16,29 @@
 
 ## Install
 
+### Copilot CLI
+
 ```bash
 copilot plugin install austenstone/copilot-immortal
 ```
 
-That's it. You now have an `@immortal` agent that never stops.
+### VS Code
+
+Run **Chat: Install Plugin From Source** from the Command Palette, enter:
+
+```
+https://github.com/austenstone/copilot-immortal
+```
+
+Or add the marketplace to your settings:
+
+```json
+"chat.plugins.marketplaces": ["austenstone/copilot-immortal"]
+```
+
+> Requires `chat.plugins.enabled: true` (preview).
+
+You now have an `@immortal` agent that never stops.
 
 ## How it works
 
