@@ -32,25 +32,26 @@ That's it. The agent loops forever. You control what it does each cycle with a `
 
 ## Setup
 
-The recommended approach is **agent-scoped hooks** — this makes a specific [custom agent](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode#_custom-agents) immortal while your normal Copilot usage stays normal. Workspace or user-level hooks will make *all* Copilot agents loop forever, which is probably not what you want.
+Copy the hook scripts into your project:
+
+```bash
+cp -r .github/hooks/ <your-project>/.github/hooks/
+chmod +x <your-project>/.github/hooks/*.sh
+```
+
+Then pick where to wire them up:
 
 | Scope | Location | Effect |
 |-------|----------|--------|
-| **Custom agent** (recommended) | `hooks` field in `.agent.md` frontmatter | Only that agent runs forever |
-| **Workspace** | `.github/hooks/hooks.json` | All agents in this workspace run forever |
-| **User** | `~/.copilot/hooks/hooks.json` | All agents everywhere run forever |
+| **Custom agent** | `hooks` in [`.agent.md`](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode#_custom-agents) frontmatter | Only that agent loops (recommended) |
+| **Workspace** | `.github/hooks/hooks.json` | All agents in this workspace loop |
+| **User** | `~/.copilot/hooks/hooks.json` | All agents everywhere loop |
 
-### Option A: Custom agent hooks (recommended)
+### Custom agent (recommended)
 
-Create a [custom agent](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode#_custom-agents) `.agent.md` file with hooks in the YAML frontmatter. The agent runs forever; your default Copilot stays normal.
+Requires `"chat.useCustomAgentHooks": true` in VS Code settings.
 
-First, enable agent-scoped hooks in VS Code settings:
-
-```json
-"chat.useCustomAgentHooks": true
-```
-
-Then create `.github/agents/immortal.agent.md`:
+Create `.github/agents/immortal.agent.md`:
 
 ```yaml
 ---
@@ -76,43 +77,11 @@ hooks:
 You are an always-on assistant. Follow the instructions in HEARTBEAT.md each cycle.
 ```
 
-The `COPILOT_HEARTBEAT_INTERVAL` is set via the `env` field in the frontmatter — no shell profile needed. Agent-scoped hooks run *in addition to* any workspace or user-level hooks for the same event.
+The `env` field sets `COPILOT_HEARTBEAT_INTERVAL` per-agent. Your normal Copilot stays normal.
 
-Copy the hook scripts into your project:
+### `HEARTBEAT.md` (optional)
 
-```bash
-cp -r .github/hooks/ <your-project>/.github/hooks/
-chmod +x <your-project>/.github/hooks/*.sh
-```
-
-### Option B: Workspace hooks
-
-Apply to all agents in a workspace. Every Copilot session will loop forever.
-
-```bash
-cp -r .github/hooks/ <your-project>/.github/hooks/
-chmod +x <your-project>/.github/hooks/*.sh
-```
-
-Set the env var in your shell profile:
-
-```bash
-export COPILOT_HEARTBEAT_INTERVAL=120  # seconds between cycles
-```
-
-### Option C: User-level hooks
-
-Apply across all workspaces globally:
-
-```bash
-mkdir -p ~/.copilot/hooks
-cp .github/hooks/* ~/.copilot/hooks/
-chmod +x ~/.copilot/hooks/*.sh
-```
-
-### (Optional) Add a `HEARTBEAT.md`
-
-Drop one in your workspace root. The agent reads it every cycle:
+Drop one in your workspace root to control what the agent does each cycle:
 
 ```markdown
 # Heartbeat
@@ -133,23 +102,10 @@ Each cycle:
 | **PreCompact** | `persist.sh` | Saves context before conversation compaction |
 | **PreToolUse** | `guard.sh` | Blocks `rm -rf`, `git push --force`, `git reset --hard`, `DROP TABLE` |
 
-## Configuration
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `COPILOT_HEARTBEAT_INTERVAL` | _(unset)_ | Seconds between cycles. Must be set to enable. |
-
-### `HEARTBEAT.md`
-
-Your control surface. Natural language instructions read every cycle. Change it live — the agent picks up new instructions on the next heartbeat.
-
-See [HEARTBEAT.md](HEARTBEAT.md) for an example.
-
 ## Stopping
 
-- **Unset the env var** and restart VS Code
-- **Close the chat panel**
-- **Wait for sleep** — interact normally during the pause
+- Close the chat panel
+- Remove the `COPILOT_HEARTBEAT_INTERVAL` env from the agent/hooks config
 
 ## Requirements
 
