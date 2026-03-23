@@ -12,8 +12,8 @@
          work → sleep → work → sleep → ∞
 ```
 
-[![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_Agent-0098FF?style=for-the-badge&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect?url=vscode%3Achat-agent%2Finstall%3Furl%3Dhttps%3A%2F%2Fraw.githubusercontent.com%2Faustenstone%2Fcopilot-immortal%2Fmain%2Fagents%2Fimmortal.agent.md)
-[![Install in VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-Install_Agent-24bfa5?style=for-the-badge&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect?url=vscode-insiders%3Achat-agent%2Finstall%3Furl%3Dhttps%3A%2F%2Fraw.githubusercontent.com%2Faustenstone%2Fcopilot-immortal%2Fmain%2Fagents%2Fimmortal.agent.md)
+[![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_Plugin-0098FF?style=for-the-badge&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect?url=vscode%3Achat-plugin%2Finstall%3Furl%3Dhttps%3A%2F%2Fgithub.com%2Faustenstone%2Fcopilot-immortal)
+[![Install in VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-Install_Plugin-24bfa5?style=for-the-badge&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect?url=vscode-insiders%3Achat-plugin%2Finstall%3Furl%3Dhttps%3A%2F%2Fgithub.com%2Faustenstone%2Fcopilot-immortal)
 
 </div>
 
