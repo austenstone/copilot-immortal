@@ -9,5 +9,5 @@
   "license": "MIT",
   "keywords": ["heartbeat", "always-on", "hooks", "immortal"],
   "agents": "agents/",
-  "hooks": ".github/hooks/hooks.json"
+  "hooks": "hooks.json"
 }
