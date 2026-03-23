@@ -4,8 +4,8 @@
 		"Stop": [
 			{
 				"type": "command",
-				"bash": "${CLAUDE_PLUGIN_ROOT}/heartbeat.sh",
-				"cwd": ".",
+				"bash": "hooks/heartbeat.sh",
+				"cwd": "${CLAUDE_PLUGIN_ROOT}",
 				"env": {
 					"COPILOT_HEARTBEAT_INTERVAL": "120"
 				},
@@ -15,24 +15,24 @@
 		"SessionStart": [
 			{
 				"type": "command",
-				"bash": "${CLAUDE_PLUGIN_ROOT}/context.sh",
-				"cwd": ".",
+				"bash": "hooks/context.sh",
+				"cwd": "${CLAUDE_PLUGIN_ROOT}",
 				"timeoutSec": 10
 			}
 		],
 		"PreCompact": [
 			{
 				"type": "command",
-				"bash": "${CLAUDE_PLUGIN_ROOT}/persist.sh",
-				"cwd": ".",
+				"bash": "hooks/persist.sh",
+				"cwd": "${CLAUDE_PLUGIN_ROOT}",
 				"timeoutSec": 10
 			}
 		],
 		"PreToolUse": [
 			{
 				"type": "command",
-				"bash": "${CLAUDE_PLUGIN_ROOT}/guard.sh",
-				"cwd": ".",
+				"bash": "hooks/guard.sh",
+				"cwd": "${CLAUDE_PLUGIN_ROOT}",
 				"timeoutSec": 10
 			}
 		]
