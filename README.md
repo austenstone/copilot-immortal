@@ -12,6 +12,9 @@
          work → sleep → work → sleep → ∞
 ```
 
+[![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_Agent-0098FF?style=for-the-badge&logo=visualstudiocode&logoColor=white)](vscode:chat-agent/install?url=https://raw.githubusercontent.com/austenstone/copilot-immortal/main/agents/immortal.agent.md)
+[![Install in VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-Install_Agent-24bfa5?style=for-the-badge&logo=visualstudiocode&logoColor=white)](vscode-insiders:chat-agent/install?url=https://raw.githubusercontent.com/austenstone/copilot-immortal/main/agents/immortal.agent.md)
+
 </div>
 
 ## Install
