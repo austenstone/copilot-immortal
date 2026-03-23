@@ -1,5 +1,4 @@
 {
-	"version": 1,
 	"hooks": {
 		"Stop": [
 			{
@@ -8,7 +7,7 @@
 				"env": {
 					"COPILOT_HEARTBEAT_INTERVAL": "5"
 				},
-				"timeoutSec": 600
+				"timeout": 600
 			}
 		],
 		"SessionStart": [
