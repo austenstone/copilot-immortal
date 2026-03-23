@@ -14,7 +14,7 @@
 
 **One env var. Four shell scripts. Copilot never stops.**
 
-[How it works](#how-it-works) · [Quick start](#quick-start) · [Configuration](#configuration)
+[How it works](#how-it-works) · [Setup](#setup) · [Configuration](#configuration)
 
 </div>
 
@@ -22,7 +22,7 @@
 
 ## How it works
 
-[VS Code Copilot hooks](https://code.visualstudio.com/docs/copilot/copilot-extensibility-overview#_agent-hooks) let you intercept agent lifecycle events. The **Stop** hook fires every time the agent tries to stop. This repo blocks that event and tells the agent to keep working.
+[VS Code Copilot hooks](https://code.visualstudio.com/docs/copilot/customization/hooks) let you intercept agent lifecycle events. The **Stop** hook fires every time the agent tries to stop. This repo blocks that event and tells the agent to keep working.
 
 ```
 start → agent works → tries to stop → BLOCKED → works more → sleeps → repeats ♾️
@@ -30,16 +30,65 @@ start → agent works → tries to stop → BLOCKED → works more → sleeps �
 
 That's it. The agent loops forever. You control what it does each cycle with a `HEARTBEAT.md` file.
 
-## Quick start
+## Setup
 
-**1. Copy the hooks**
+Hooks can be installed in [several locations](https://code.visualstudio.com/docs/copilot/customization/hooks) depending on what scope you want:
+
+| Scope | Location |
+|-------|----------|
+| **Workspace** | `.github/hooks/hooks.json` |
+| **User** | `~/.copilot/hooks/hooks.json` |
+| **Custom agent** | `hooks` field in `.agent.md` frontmatter |
+
+### Option A: Workspace hooks (most common)
+
+Copy the hooks into your project so they apply to all agents in that workspace:
 
 ```bash
 cp -r .github/hooks/ <your-project>/.github/hooks/
 chmod +x <your-project>/.github/hooks/*.sh
 ```
 
-**2. Set the env var**
+### Option B: Custom agent hooks
+
+Wire hooks directly into a [custom agent](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode#_custom-agents) `.agent.md` file. This lets you make a specific agent immortal while others behave normally:
+
+```yaml
+---
+name: my-immortal-agent
+description: "An always-on assistant that never stops"
+hooks:
+  SessionStart:
+    - type: command
+      command: ".github/hooks/context.sh"
+  Stop:
+    - type: command
+      command: ".github/hooks/heartbeat.sh"
+      env:
+        COPILOT_HEARTBEAT_INTERVAL: "120"
+  PreCompact:
+    - type: command
+      command: ".github/hooks/persist.sh"
+---
+
+You are an always-on assistant. Follow the instructions in HEARTBEAT.md each cycle.
+```
+
+Note: when hooks are defined in the agent frontmatter, the `COPILOT_HEARTBEAT_INTERVAL` env var is set per-agent via the `env` field — no shell profile needed.
+
+### Option C: User-level hooks
+
+Install globally so they apply across all workspaces:
+
+```bash
+mkdir -p ~/.copilot/hooks
+cp .github/hooks/* ~/.copilot/hooks/
+chmod +x ~/.copilot/hooks/*.sh
+```
+
+### Enable immortal mode
+
+Set the env var (unless using agent-scoped `env`):
 
 ```bash
 # Add to .zshrc / .bashrc
@@ -48,7 +97,7 @@ export COPILOT_HEARTBEAT_INTERVAL=120  # seconds between cycles
 
 No env var = normal Copilot. Set it = immortal mode.
 
-**3. (Optional) Add a `HEARTBEAT.md`**
+### (Optional) Add a `HEARTBEAT.md`
 
 Drop one in your workspace root. The agent reads it every cycle:
 
