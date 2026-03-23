@@ -4,32 +4,29 @@
 		"Stop": [
 			{
 				"type": "command",
-				"command": "./hooks/heartbeat.sh",
+				"command": "./scripts/heartbeat.sh",
 				"env": {
-					"COPILOT_HEARTBEAT_INTERVAL": "120"
+					"COPILOT_HEARTBEAT_INTERVAL": "5"
 				},
-				"timeout": 30
+				"timeoutSec": 600
 			}
 		],
 		"SessionStart": [
 			{
 				"type": "command",
-				"command": "./hooks/context.sh",
-				"timeout": 10
+				"command": "./scripts/context.sh"
 			}
 		],
 		"PreCompact": [
 			{
 				"type": "command",
-				"command": "./hooks/persist.sh",
-				"timeout": 10
+				"command": "./scripts/persist.sh"
 			}
 		],
 		"PreToolUse": [
 			{
 				"type": "command",
-				"command": "./hooks/guard.sh",
-				"timeout": 10
+				"command": "./scripts/guard.sh"
 			}
 		]
 	}

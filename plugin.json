@@ -8,5 +8,6 @@
   },
   "license": "MIT",
   "keywords": ["heartbeat", "always-on", "hooks", "immortal"],
-  "agents": "agents/"
+  "agents": "agents/",
+  "hooks": ".github/hooks/hooks.json"
 }

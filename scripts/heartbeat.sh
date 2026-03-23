@@ -2,8 +2,9 @@
 # Immortal heartbeat — makes Copilot run forever.
 #
 # The Stop hook fires every time the agent tries to stop. This script
-# blocks the stop and tells the agent to keep working. The agent sleeps
-# between cycles and wakes up to do more work.
+# sleeps for COPILOT_HEARTBEAT_INTERVAL seconds (controlled by timeoutSec
+# in hooks.json so VS Code won't kill the process), then blocks the stop
+# and tells the agent to keep working. No agent tool calls wasted on sleeping.
 #
 # Set COPILOT_HEARTBEAT_INTERVAL (seconds) to enable. Unset = normal stop.
 # Customize behavior with a HEARTBEAT.md file in your workspace root.
@@ -58,18 +59,18 @@ fi
 if [ -n "$HEARTBEAT_INSTRUCTIONS" ]; then
   TASK_PROMPT="$HEARTBEAT_INSTRUCTIONS"
 else
-  TASK_PROMPT="You are in heartbeat mode. Look for useful work to do in this workspace — fix issues, run tests, clean up code, update docs. When done, sleep before the next cycle."
+  TASK_PROMPT="You are in heartbeat mode. Look for useful work to do in this workspace — fix issues, run tests, clean up code, update docs."
 fi
 
-SLEEP_INSTRUCTION=""
+# --- Sleep in the hook so the agent doesn't have to ---
 if [ "$HEARTBEAT_INTERVAL" -gt 0 ] 2>/dev/null; then
-  SLEEP_INSTRUCTION="When done, run \`sleep ${HEARTBEAT_INTERVAL}\` in terminal to pause before the next cycle.\n\n"
+  sleep "$HEARTBEAT_INTERVAL"
 fi
 
 cat <<EOF
 {
   "decision": "block",
-  "reason": "Heartbeat #${CYCLE}.\n\nWorkspace:${CONTEXT_ESCAPED}\n\n${SLEEP_INSTRUCTION}${TASK_PROMPT}",
+  "reason": "Heartbeat #${CYCLE}.\n\nWorkspace:${CONTEXT_ESCAPED}\n\n${TASK_PROMPT}",
   "hookSpecificOutput": {
     "hookEventName": "Stop",
     "decision": "block",

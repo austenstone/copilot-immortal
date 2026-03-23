@@ -45,20 +45,20 @@ You now have an `@immortal` agent that never stops.
 
 ## How it works
 
-The [Stop hook](https://code.visualstudio.com/docs/copilot/customization/hooks) fires every time the agent tries to stop. This plugin blocks it and says "keep going." The agent works, sleeps, wakes up, repeats.
+The [Stop hook](https://code.visualstudio.com/docs/copilot/customization/hooks) fires every time the agent tries to stop. The hook script sleeps for the configured interval (using `timeoutSec` so VS Code doesn't kill it), then blocks the stop and tells the agent to keep working. The sleep happens in the hook itself — zero agent tool calls wasted.
 
 ```
-start → work → tries to stop → BLOCKED → work → sleep → repeat ♾️
+start → work → tries to stop → hook sleeps → BLOCKED → work → repeat ♾️
 ```
 
 ## What's included
 
 | File | Purpose |
 |------|---------|
-| `heartbeat.sh` | Blocks stop, injects workspace context |
-| `context.sh` | Injects git branch + date at session start |
-| `persist.sh` | Saves context before conversation compaction |
-| `guard.sh` | Blocks `rm -rf`, `git push --force`, `git reset --hard` |
+| `scripts/heartbeat.sh` | Blocks stop, injects workspace context |
+| `scripts/context.sh` | Injects git branch + date at session start |
+| `scripts/persist.sh` | Saves context before conversation compaction |
+| `scripts/guard.sh` | Blocks `rm -rf`, `git push --force`, `git reset --hard` |
 | `agents/immortal.agent.md` | Ready-to-use always-on agent |
 
 ## Configuration
@@ -72,10 +72,6 @@ Close the chat panel, or uninstall:
 ```bash
 copilot plugin uninstall copilot-immortal
 ```
-
-## License
-
-MIT
 
 ## License
 
