@@ -3,25 +3,25 @@
 		"SessionStart": [
 			{
 				"type": "command",
-				"command": ".github/hooks/context.sh"
+				"command": "context.sh"
 			}
 		],
 		"Stop": [
 			{
 				"type": "command",
-				"command": ".github/hooks/heartbeat.sh"
+				"command": "heartbeat.sh"
 			}
 		],
 		"PreCompact": [
 			{
 				"type": "command",
-				"command": ".github/hooks/persist.sh"
+				"command": "persist.sh"
 			}
 		],
 		"PreToolUse": [
 			{
 				"type": "command",
-				"command": ".github/hooks/guard.sh"
+				"command": "guard.sh"
 			}
 		]
 	}

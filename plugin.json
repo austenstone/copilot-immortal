@@ -1,0 +1,13 @@
+{
+  "name": "copilot-immortal",
+  "description": "Make GitHub Copilot run forever",
+  "version": "1.0.0",
+  "author": {
+    "name": "Austen Stone",
+    "email": "austenstone@github.com"
+  },
+  "license": "MIT",
+  "keywords": ["heartbeat", "always-on", "hooks", "immortal"],
+  "agents": "agents/",
+  "hooks": "hooks.json"
+}

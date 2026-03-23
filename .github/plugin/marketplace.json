@@ -1,0 +1,19 @@
+{
+  "name": "copilot-immortal",
+  "owner": {
+    "name": "Austen Stone",
+    "email": "austenstone@github.com"
+  },
+  "metadata": {
+    "description": "Make GitHub Copilot run forever",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "copilot-immortal",
+      "description": "Make GitHub Copilot run forever — hooks that block the Stop event and keep the agent looping",
+      "version": "1.0.0",
+      "source": "."
+    }
+  ]
+}
