@@ -61,10 +61,10 @@ Without a `HEARTBEAT.md`, the agent uses a generic "find useful work" prompt.
 
 | Hook | File | What it does |
 |------|------|-------------|
-| **Stop** | `stop-heartbeat.sh` | Blocks the agent from stopping. Injects workspace context (git branch, dirty files, cycle count) and instructions from `HEARTBEAT.md`. This is what makes Copilot immortal. |
-| **SessionStart** | `session-start.sh` | Injects git branch, date, and uncommitted file count at session start. |
-| **PreCompact** | `pre-compact.sh` | Prompts the agent to save important context to memory before VS Code compacts the conversation. |
-| **PreToolUse** | `pre-tool-safety.sh` | Blocks dangerous terminal commands: `rm -rf`, `git push --force`, `git reset --hard`, `DROP TABLE`. |
+| **Stop** | `heartbeat.sh` | Blocks the agent from stopping. Injects workspace context (git branch, dirty files, cycle count) and instructions from `HEARTBEAT.md`. This is what makes Copilot immortal. |
+| **SessionStart** | `context.sh` | Injects git branch, date, and uncommitted file count at session start. |
+| **PreCompact** | `persist.sh` | Prompts the agent to save important context to memory before VS Code compacts the conversation. |
+| **PreToolUse** | `guard.sh` | Blocks dangerous terminal commands: `rm -rf`, `git push --force`, `git reset --hard`, `DROP TABLE`. |
 
 ## Configuration
 
