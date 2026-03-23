@@ -1,0 +1,28 @@
+{
+	"hooks": {
+		"SessionStart": [
+			{
+				"type": "command",
+				"command": ".github/hooks/session-start.sh"
+			}
+		],
+		"Stop": [
+			{
+				"type": "command",
+				"command": ".github/hooks/stop-heartbeat.sh"
+			}
+		],
+		"PreCompact": [
+			{
+				"type": "command",
+				"command": ".github/hooks/pre-compact.sh"
+			}
+		],
+		"PreToolUse": [
+			{
+				"type": "command",
+				"command": ".github/hooks/pre-tool-safety.sh"
+			}
+		]
+	}
+}
