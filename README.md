@@ -1,98 +1,98 @@
-# copilot-immortal
+<div align="center">
 
-Make GitHub Copilot run forever.
+```
+    ╔═══════════════════════════════════════╗
+    ║                                       ║
+    ║   ♾️  copilot-immortal                ║
+    ║                                       ║
+    ║   Make GitHub Copilot run forever.    ║
+    ║                                       ║
+    ╚═══════════════════════════════════════╝
 
-A set of [VS Code Copilot hooks](https://code.visualstudio.com/docs/copilot/copilot-extensibility-overview#_agent-hooks) that turn your AI agent into an always-on assistant. The agent never stops — it works, sleeps, wakes up, and works again in a continuous loop.
+         work → sleep → work → sleep → ∞
+```
+
+**One env var. Four shell scripts. Copilot never stops.**
+
+[How it works](#how-it-works) · [Quick start](#quick-start) · [Configuration](#configuration)
+
+</div>
+
+---
 
 ## How it works
 
-The **Stop hook** is the core trick. Every time Copilot tries to stop, the hook blocks it and says "keep going." The agent does useful work, sleeps for a configurable interval, then wakes up to the next cycle.
+[VS Code Copilot hooks](https://code.visualstudio.com/docs/copilot/copilot-extensibility-overview#_agent-hooks) let you intercept agent lifecycle events. The **Stop** hook fires every time the agent tries to stop. This repo blocks that event and tells the agent to keep working.
 
 ```
-You ──► Start Copilot ──► Agent works ──► Agent tries to stop
-                                                    │
-                                          Stop hook blocks it
-                                                    │
-                                          "Do more work, then sleep"
-                                                    │
-                                          Agent works ──► sleep N ──► repeat ♾️
+start → agent works → tries to stop → BLOCKED → works more → sleeps → repeats ♾️
 ```
+
+That's it. The agent loops forever. You control what it does each cycle with a `HEARTBEAT.md` file.
 
 ## Quick start
 
-### 1. Copy hooks into your project
+**1. Copy the hooks**
 
 ```bash
 cp -r .github/hooks/ <your-project>/.github/hooks/
 chmod +x <your-project>/.github/hooks/*.sh
 ```
 
-### 2. Set the environment variable
-
-Add to your shell profile (`.zshrc`, `.bashrc`, etc.):
+**2. Set the env var**
 
 ```bash
+# Add to .zshrc / .bashrc
 export COPILOT_HEARTBEAT_INTERVAL=120  # seconds between cycles
 ```
 
-Without this variable set, the hooks are dormant — Copilot behaves normally.
+No env var = normal Copilot. Set it = immortal mode.
 
-### 3. (Optional) Add a HEARTBEAT.md
+**3. (Optional) Add a `HEARTBEAT.md`**
 
-Drop a `HEARTBEAT.md` in your workspace root to control what the agent does each cycle:
+Drop one in your workspace root. The agent reads it every cycle:
 
 ```markdown
 # Heartbeat
 
-You are an always-on assistant for this project.
-
-## Each cycle
-
-1. Check for failing tests and fix them
-2. Look for TODO comments and address them
-3. Review open issues and suggest fixes
-4. Clean up code style issues
-5. Update documentation if code changed
+Each cycle:
+1. Run tests, fix failures
+2. Address TODO/FIXME comments
+3. Clean up code
+4. Update docs
 ```
 
-Without a `HEARTBEAT.md`, the agent uses a generic "find useful work" prompt.
+## Hooks
 
-## Hooks included
-
-| Hook | File | What it does |
-|------|------|-------------|
-| **Stop** | `heartbeat.sh` | Blocks the agent from stopping. Injects workspace context (git branch, dirty files, cycle count) and instructions from `HEARTBEAT.md`. This is what makes Copilot immortal. |
-| **SessionStart** | `context.sh` | Injects git branch, date, and uncommitted file count at session start. |
-| **PreCompact** | `persist.sh` | Prompts the agent to save important context to memory before VS Code compacts the conversation. |
-| **PreToolUse** | `guard.sh` | Blocks dangerous terminal commands: `rm -rf`, `git push --force`, `git reset --hard`, `DROP TABLE`. |
+| Hook | Script | Purpose |
+|------|--------|---------|
+| **Stop** | `heartbeat.sh` | Blocks stop, injects context, reads `HEARTBEAT.md` |
+| **SessionStart** | `context.sh` | Injects git branch + date + dirty files |
+| **PreCompact** | `persist.sh` | Saves context before conversation compaction |
+| **PreToolUse** | `guard.sh` | Blocks `rm -rf`, `git push --force`, `git reset --hard`, `DROP TABLE` |
 
 ## Configuration
 
-### Environment variables
-
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `COPILOT_HEARTBEAT_INTERVAL` | _(unset)_ | Seconds between heartbeat cycles. **Must be set to enable immortal mode.** When unset, all hooks pass through normally. |
+| `COPILOT_HEARTBEAT_INTERVAL` | _(unset)_ | Seconds between cycles. Must be set to enable. |
 
-### HEARTBEAT.md
+### `HEARTBEAT.md`
 
-The `HEARTBEAT.md` file in your workspace root is your control surface. Write instructions in natural language — the agent reads it every cycle. You can change it while the agent is running and it'll pick up the new instructions on the next cycle.
+Your control surface. Natural language instructions read every cycle. Change it live — the agent picks up new instructions on the next heartbeat.
 
 See [HEARTBEAT.md](HEARTBEAT.md) for an example.
 
-## How to stop
+## Stopping
 
-Three ways:
-
-1. **Unset the env var** — remove `COPILOT_HEARTBEAT_INTERVAL` from your environment and restart VS Code
-2. **Close the chat** — closing the Copilot chat panel kills the session
-3. **Temporarily** — the agent will naturally pause during its sleep interval; you can interact normally during that window
+- **Unset the env var** and restart VS Code
+- **Close the chat panel**
+- **Wait for sleep** — interact normally during the pause
 
 ## Requirements
 
-- VS Code with GitHub Copilot (agent mode)
-- `bash`, `python3`, `git` on PATH
-- Copilot hooks support (VS Code Insiders or latest stable)
+- VS Code + GitHub Copilot (agent mode)
+- `bash`, `python3`, `git`
 
 ## License
 
