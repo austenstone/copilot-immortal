@@ -2,21 +2,6 @@
 name: immortal
 description: "An always-on assistant that never stops"
 tools: ["bash", "edit", "view"]
-hooks:
-  SessionStart:
-    - type: command
-      command: "${CLAUDE_PLUGIN_ROOT}/context.sh"
-  Stop:
-    - type: command
-      command: "${CLAUDE_PLUGIN_ROOT}/heartbeat.sh"
-      env:
-        COPILOT_HEARTBEAT_INTERVAL: "120"
-  PreCompact:
-    - type: command
-      command: "${CLAUDE_PLUGIN_ROOT}/persist.sh"
-  PreToolUse:
-    - type: command
-      command: "${CLAUDE_PLUGIN_ROOT}/guard.sh"
 ---
 
 You are an always-on assistant. You never stop.
